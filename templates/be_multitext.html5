@@ -1,0 +1,31 @@
+<div class="tl_multitextwizard">
+	<table cellspacing="0" cellpadding="0" class="tl_multitextwizard" id="ctrl_<?php echo $this->strId; ?>" summary="Multitext wizard" <?php echo $this->attributes; ?> >
+		<thead>
+			<tr>
+<?php foreach ($this->arrColumns as $column): ?>
+				<th class="multitext" style="padding-right: 5px; text-align: left;"><?php echo ((strlen($column['label'])) ? $column['label'] : "") . (($column['mandatory']) ? '<span class="mandatory">*</span>' : ''); ?></th>
+<?php endforeach; ?>
+				<th style="white-space:nowrap;"></th>
+			</tr>
+		</thead>
+		<tbody>
+<?php for ($row = 0; $row < count($this->varValue); $row++): ?>
+			<tr>
+<?php for ($col = 0; $col < count($this->arrColumns); $col++): ?>
+				<td style="padding-right: 5px;<?php if (array_key_exists('width', $this->arrColumns[$col]) && strlen($this->arrColumns[$col]['width'])) echo ' width: ' . $this->arrColumns[$col]['width'] . ';'; ?>">
+					<input type="text" name="<?php echo $this->strId.'['.$row.']['.$col.']'; ?>" class="tl_text<?php if (strlen($this->arrColumns[$col]['name'])) echo (!is_numeric($this->arrColumns[$col]['name'])) ? (' ' . $this->arrColumns[$col]['name']) : (' column' . $this->arrColumns[$col]['name']); ?>" style="width: 95%;<?php if (array_key_exists('width', $this->arrColumns[$col])) echo $this->arrColumns[$col]['style']; ?>" value="<?php echo specialchars($this->varValue[$row][$col]); ?>" />
+<?php if (strlen($this->arrMultiErrors[$row][$col])): ?>
+					<p class="tl_error"><?php echo $this->arrMultiErrors[$row][$col]; ?></p>
+<?php endif; ?>
+				</td>
+<?php endfor; ?>
+				<td style="white-space:nowrap; width: 110px;">
+<?php foreach ($this->arrButtons as $button): ?>
+					<a href="<?php echo sprintf($button['href'], $col); ?>" title="<?php echo $button['title']; ?>" onclick="<?php echo $button['onclick']; ?>"><?php echo $button['img']; ?></a>
+<?php endforeach; ?>
+				</td>
+			</tr>
+<?php endfor; ?>
+		</tbody>
+	</table>
+</div>
