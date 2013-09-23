@@ -71,11 +71,11 @@ var MultiText =
 
 				for (var i=0; i<childs.length; i++)
 				{
-					var next = childs[i].clone(true).injectInside(tr);
+					var next = childs[i].clone(true).inject(tr);
 					if (!selectElement) selectElement = next.getFirst();
 					next.getFirst().value = '';
 				}
-				tr.injectAfter(parentTr);
+				tr.inject(parentTr, 'after');
 				break;
 
 			case 'rcopy':
@@ -84,19 +84,19 @@ var MultiText =
 
 				for (var i=0; i<childs.length; i++)
 				{
-					var next = childs[i].clone(true).injectInside(tr);
+					var next = childs[i].clone(true).inject(tr);
 					if (!selectElement) selectElement = next.getFirst();
 					next.getFirst().value = childs[i].getFirst().value;
 				}
-				tr.injectAfter(parentTr);
+				tr.inject(parentTr, 'after');
 				break;
 
 			case 'rup':
-				parentTr.getPrevious() ? parentTr.injectBefore(parentTr.getPrevious()) : parentTr.injectInside(tbody);
+				parentTr.getPrevious() ? parentTr.inject(parentTr.getPrevious(), 'before') : parentTr.inject(tbody);
 				break;
 
 			case 'rdown':
-				parentTr.getNext() ? parentTr.injectAfter(parentTr.getNext()) : parentTr.injectBefore(tbody.getFirst().getNext());
+				parentTr.getNext() ? parentTr.inject(parentTr.getNext(), 'after') : parentTr.inject(tbody.getFirst().getNext(), 'before');
 				break;
 
 			case 'rdelete':
