@@ -1,22 +1,20 @@
-<?php 
+<?php
 
 /**
- * @copyright  Helmut Schottmüller 2008-2013
+ * @copyright  Helmut Schottmüller 2020
  * @author     Helmut Schottmüller <https://github.com/hschottm>
  * @package    Backend
- * @license    LGPL
- * @filesource
+ * @license    LGPL-3.0+, CC-BY-NC-3.0
  */
 
-namespace Contao;
+namespace Hschottm\MultiTextWizardBundle;
 
 /**
- * Class MultiTextWizard
+ * Class TextWizard
  *
- * Provide methods to handle multitext fields.
- * @copyright  Helmut Schottmüller 2008-2013
- * @author     Helmut Schottmüller <https://github.com/hschottm>
- * @package    Controller
+ * Provide a backend wizard to handle text lists
+ *
+ * @property integer $maxlength
  */
 class MultiTextWizard extends \Widget
 {
@@ -220,13 +218,13 @@ class MultiTextWizard extends \Widget
 	 */
 	public function generate()
 	{
-		if (is_array($GLOBALS['TL_JAVASCRIPT']))
+        if (is_array($GLOBALS['TL_JAVASCRIPT']))
 		{
-			array_insert($GLOBALS['TL_JAVASCRIPT'], 1, 'system/modules/MultiTextWizard/assets/multitext.js');
+			array_insert($GLOBALS['TL_JAVASCRIPT'], 1, 'bundles/hschottmmultitextwizard/js/multitext.min.js');
 		}
 		else
 		{
-			$GLOBALS['TL_JAVASCRIPT'] = array('system/modules/MultiTextWizard/assets/multitext.js');
+			$GLOBALS['TL_JAVASCRIPT'] = array('bundles/hschottmmultitextwizard/js/multitext.min.js');
 		}
 
 		$arrButtons = array('rnew','rcopy', 'rup', 'rdown', 'rdelete');
@@ -299,3 +297,4 @@ class MultiTextWizard extends \Widget
 	}
 }
 
+class_alias(MultiTextWizard::class, 'MultiTextWizard');
