@@ -272,7 +272,7 @@ class MultiTextWizard extends \Widget
 			$this->varValue = array($emptyarray);
 		}
 		
-		$objTemplate = new BackendTemplate($this->strMultitextTemplate);
+		$objTemplate = new \BackendTemplate($this->strMultitextTemplate);
 		$objTemplate->strId = $this->strId;
 		$objTemplate->attributes = $this->getAttributes();
 		$objTemplate->arrColumns = $this->arrColumns;
