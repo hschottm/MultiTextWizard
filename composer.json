@@ -1,6 +1,6 @@
 {
     "name":"hschottm/contao-multitextwizard",
-    "description":"contao-multitextwizard is a backend widget that can be used to add an array of text input fields for Contao backend forms.",
+    "description":"contao-multitextwizard is a backend widget that can be used to add an array of text input fields to Contao backend forms.",
     "keywords":["contao", "widget", "extension", "input", "bundle", "wizard", "multiple"],
     "type":"contao-bundle",
     "license":["LGPL-3.0-or-later", "CC-BY-NC-SA-4.0"],
@@ -42,6 +42,10 @@
       },
       "extra":{
         "contao-manager-plugin": "Hschottm\\MultiTextWizardBundle\\ContaoManager\\Plugin"
-      }
+      },
+      "support": {
+        "issues": "https://github.com/hschottm/MultiTextWizard/issues",
+        "source": "https://github.com/hschottm/MultiTextWizard"
+    }
   }
   
