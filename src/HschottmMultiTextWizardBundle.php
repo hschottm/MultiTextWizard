@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Hschottm\MultiTextWizardBundle;
 
-use Hschottm\TextWizardBundle\DependencyInjection\MultiTextWizardExtension;
+use Hschottm\MultiTextWizardBundle\DependencyInjection\MultiTextWizardExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class HschottmMultiTextWizardBundle extends Bundle
