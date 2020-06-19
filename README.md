@@ -1,15 +1,15 @@
 # MultiTextWizard
 contao-multitextwizard is a backend widget that can be used to add an array of text input fields to Contao backend forms
-[![Latest Version on Packagist](http://img.shields.io/packagist/v/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-textwizard)
-[![Installations via composer per month](http://img.shields.io/packagist/dm/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-textwizard)
-[![Installations via composer total](http://img.shields.io/packagist/dt/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-textwizard)
+[![Latest Version on Packagist](http://img.shields.io/packagist/v/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-multitextwizard)
+[![Installations via composer per month](http://img.shields.io/packagist/dm/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-multitextwizard)
+[![Installations via composer total](http://img.shields.io/packagist/dt/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-multitextwizard)
 
 # contao-multitextwizard
 Contao backend widget for text list input
 
 contao-textwizard is a backend widget that can be used to add and edit an array of text input fields to Contao backend forms.
 
-![textwizard](https://user-images.githubusercontent.com/873113/49338631-0781c200-f624-11e8-96a6-9567e19a178e.png)
+![textwizard](https://github.com/hschottm/MultiTextWizard/blob/Documentation/docs/images/screenshot_multitextwizard_backend.png)
 
 ## Use in the data container array (DCA)
 
