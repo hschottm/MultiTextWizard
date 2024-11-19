@@ -1,13 +1,18 @@
 <?php
 
 /**
- * @copyright  Helmut Schottmüller 2020
+ * @copyright  Helmut Schottmüller 2020-2024
  * @author     Helmut Schottmüller <https://github.com/hschottm>
  * @package    Backend
  * @license    LGPL-3.0+, CC-BY-NC-3.0
  */
 
 namespace Hschottm\MultiTextWizardBundle;
+
+use Contao\Widget;
+use Contao\Input;
+use Contao\Environment;
+use Contao\BackendTemplate;
 
 /**
  * Class TextWizard
@@ -16,7 +21,7 @@ namespace Hschottm\MultiTextWizardBundle;
  *
  * @property integer $maxlength
  */
-class MultiTextWizard extends \Widget
+class MultiTextWizard extends Widget
 {
 	protected $arrMultiErrors = array();
 	protected $arrColumns = array();
@@ -233,37 +238,37 @@ class MultiTextWizard extends \Widget
 		$emptyarray = array();
 		for ($i = 0; $i < count($this->arrColumns); $i++) array_push($emptyarray, '');
 		// Change the order
-		if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord)
+		if (Input::get($strCommand) && is_numeric(Input::get('cid')) && Input::get('id') == $this->currentRecord)
 		{
 			$this->import('Database');
 
-			switch (\Input::get($strCommand))
+			switch (Input::get($strCommand))
 			{
 				case 'rnew':
-					array_insert($this->varValue, \Input::get('cid') + 1, array($emptyarray));
+					array_insert($this->varValue, Input::get('cid') + 1, array($emptyarray));
 					break;
 
 				case 'rcopy':
-					$this->varValue = array_duplicate($this->varValue, \Input::get('cid'));
+					$this->varValue = array_duplicate($this->varValue, Input::get('cid'));
 					break;
 
 				case 'rup':
-					$this->varValue = array_move_up($this->varValue, \Input::get('cid'));
+					$this->varValue = array_move_up($this->varValue, Input::get('cid'));
 					break;
 
 				case 'rdown':
-					$this->varValue = array_move_down($this->varValue, \Input::get('cid'));
+					$this->varValue = array_move_down($this->varValue, Input::get('cid'));
 					break;
 
 				case 'rdelete':
-					$this->varValue = array_delete($this->varValue, \Input::get('cid'));
+					$this->varValue = array_delete($this->varValue, Input::get('cid'));
 					break;
 			}
 
 			$this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
 						   ->execute(serialize($this->varValue), $this->currentRecord);
 
-			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
+			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', Environment::get('request'))));
 		}
 
 		// Make sure there is at least an empty array
@@ -272,7 +277,7 @@ class MultiTextWizard extends \Widget
 			$this->varValue = array($emptyarray);
 		}
 		
-		$objTemplate = new \BackendTemplate($this->strMultitextTemplate);
+		$objTemplate = new BackendTemplate($this->strMultitextTemplate);
 		$objTemplate->strId = $this->strId;
 		$objTemplate->attributes = $this->getAttributes();
 		$objTemplate->arrColumns = $this->arrColumns;
