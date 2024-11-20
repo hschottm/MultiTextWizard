@@ -13,11 +13,12 @@ declare(strict_types=1);
 namespace Hschottm\MultiTextWizardBundle;
 
 use Hschottm\MultiTextWizardBundle\DependencyInjection\MultiTextWizardExtension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class HschottmMultiTextWizardBundle extends Bundle
 {
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new MultiTextWizardExtension();
     }

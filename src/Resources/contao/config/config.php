@@ -1,8 +1,8 @@
 <?php
 
 use Hschottm\MultiTextWizardBundle\MultiTextWizard;
+use Symfony\Component\HttpFoundation\Request;
 use Contao\System;
-use Contao\Request;
 
 $GLOBALS['BE_FFL']['multitextWizard'] = MultiTextWizard::class;
 
