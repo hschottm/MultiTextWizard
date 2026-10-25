@@ -21,12 +21,20 @@
 }
 
 .tl_multitextwizard_button img {
-    display: block;
+    /* The button owns the tooltip; its decorative image must not become a second target. */
+    pointer-events: none;
     width: 16px;
     height: 16px;
 }
 
-/* Contao provides arrow-down; rotate the same icon for the opposite action. */
-.tl_multitextwizard_button[data-multitext-action="rup"] img {
-    transform: rotate(180deg);
+.tl_multitextwizard .tl_multitextwizard_button.drag-handle {
+    cursor: grab;
+}
+
+/* Keep the action column compact; inputs fill their cells up to the 5px gutter. */
+table.tl_multitextwizard .tl_multitextwizard_actions {
+    width: 1%;
+    white-space: nowrap;
+    text-align: left;
+    vertical-align: middle;
 }

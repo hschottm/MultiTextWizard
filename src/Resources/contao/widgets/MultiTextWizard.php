@@ -131,8 +131,8 @@ class MultiTextWizard extends Widget
         $template->varValue = $rows;
         $template->arrMultiErrors = $this->arrMultiErrors;
         $buttons = [];
-        foreach (['rnew' => 'plus', 'rcopy' => 'copy', 'rup' => 'arrow-up', 'rdown' => 'arrow-down', 'rdelete' => 'trash-2'] as $action => $icon) {
-            $buttons[] = ['action' => $action, 'icon' => $icon, 'image' => \Contao\Image::getHtml((['rnew' => 'new', 'rcopy' => 'copy', 'rup' => 'arrow-down', 'rdown' => 'arrow-down', 'rdelete' => 'delete'][$action]).'.svg', '', 'aria-hidden="true"'), 'title' =>
+        foreach (['rnew' => 'new', 'rcopy' => 'copy', 'rdelete' => 'delete', 'drag' => 'drag'] as $action => $icon) {
+            $buttons[] = ['action' => $action, 'icon' => $icon, 'image' => \Contao\Image::getHtml($icon.'.svg', '', 'aria-hidden="true"'), 'title' =>
                 $this->arrConfiguration['buttonTitles'][$action] ?? $GLOBALS['TL_LANG'][$this->strTable][$action][0]
                 ?? $GLOBALS['TL_LANG']['MSC']['multitextWizard'][$action] ?? $action];
         }

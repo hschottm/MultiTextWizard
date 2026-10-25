@@ -1,6 +1,17 @@
 /** MultiTextWizard row editing; no MooTools dependency. */
 (() => {
     if (window.MultiText?.native) return;
+    function renumber(table) {
+        Array.from(table.tBodies[0].rows).forEach((item, index) => {
+            item.querySelectorAll('input[data-multitext-column]').forEach(input => {
+                const col = input.dataset.multitextColumn;
+                input.name = `${table.dataset.multitextName}[${index}][${col}]`;
+                input.id = `${table.id}_${index}_${col}`;
+            });
+        });
+        table.dispatchEvent(new Event('input', {bubbles: true}));
+        table.dispatchEvent(new Event('change', {bubbles: true}));
+    }
     function edit(element, command, id) {
         const table = id ? document.getElementById(id) : element.closest('[data-multitext-name]');
         const row = element.closest('tr');
@@ -11,6 +22,11 @@
             case 'rnew':
             case 'rcopy': {
                 const clone = row.cloneNode(true);
+                // Contao temporarily removes title while showing a tooltip. Do not clone that state.
+                clone.querySelectorAll('button[aria-label]').forEach(button => {
+                    button.setAttribute('title', button.getAttribute('aria-label'));
+                    button.removeAttribute('data-original-title');
+                });
                 clone.querySelectorAll('input[data-multitext-column]').forEach((input, col) => {
                     input.value = command === 'rnew' ? '' : row.querySelectorAll('input[data-multitext-column]')[col].value;
                     input.removeAttribute('aria-invalid');
@@ -35,17 +51,13 @@
                 break;
             default: return;
         }
-        Array.from(body.rows).forEach((item, index) => {
-            item.querySelectorAll('input[data-multitext-column]').forEach(input => {
-                const col = input.dataset.multitextColumn;
-                input.name = `${table.dataset.multitextName}[${index}][${col}]`;
-                input.id = `${table.id}_${index}_${col}`;
-            });
-        });
-        table.dispatchEvent(new Event('input', {bubbles: true}));
-        table.dispatchEvent(new Event('change', {bubbles: true}));
+        renumber(table);
         if (focus) { focus.focus(); focus.select(); }
     }
+    document.addEventListener('contao--sortable:update', event => {
+        const table = event.target.closest('table[data-multitext-name]');
+        if (table && event.target.parentElement === table.tBodies[0]) renumber(table);
+    });
     window.MultiText = {native: true, multitextWizard: edit};
     document.addEventListener('click', event => {
         const button = event.target.closest('[data-multitext-action]');

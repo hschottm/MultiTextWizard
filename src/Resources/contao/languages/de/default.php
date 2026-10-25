@@ -8,3 +8,4 @@ $GLOBALS['TL_LANG']['MSC']['multitextWizard']['rcopy'] = 'Zeile kopieren';
 $GLOBALS['TL_LANG']['MSC']['multitextWizard']['rup'] = 'Nach oben';
 $GLOBALS['TL_LANG']['MSC']['multitextWizard']['rdown'] = 'Nach unten';
 $GLOBALS['TL_LANG']['MSC']['multitextWizard']['rdelete'] = 'Zeile löschen';
+$GLOBALS['TL_LANG']['MSC']['multitextWizard']['drag'] = 'Zeile verschieben';

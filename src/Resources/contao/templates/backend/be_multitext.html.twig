@@ -2,19 +2,19 @@
   <table class="tl_multitextwizard" id="ctrl_{{ strId }}" data-multitext-name="{{ strName }}"{% if style %} style="{{ style }}"{% endif %}>
     <thead><tr>
       {% for column in arrColumns %}<th scope="col" style="text-align:left">{{ column.label }}{% if column.mandatory %}<span class="mandatory">*</span>{% endif %}</th>{% endfor %}
-      <th></th>
+      <th class="tl_multitextwizard_actions"></th>
     </tr></thead>
-    <tbody>
+    <tbody data-controller="contao--sortable" data-contao--sortable-handle-value=".drag-handle" data-contao--sortable-draggable-value="tr">
       {% for row, values in varValue %}
         <tr>
           {% for col, column in arrColumns %}
             <td style="padding-right:5px;{% if column.width %}width:{{ column.width }};{% endif %}">
-              <input type="text" id="ctrl_{{ strId }}_{{ row }}_{{ col }}" name="{{ strName }}[{{ row }}][{{ col }}]" data-multitext-column="{{ col }}" class="tl_text {{ column.class }}" style="width:95%;{{ column.style }}" value="{{ values[col] }}" aria-label="{{ column.label }}"{% if column.mandatory %} required{% endif %}{% if column.maxlength %} maxlength="{{ column.maxlength }}"{% endif %}{% if arrMultiErrors[row][col]|default([]) %} aria-invalid="true"{% endif %}>
+              <input type="text" id="ctrl_{{ strId }}_{{ row }}_{{ col }}" name="{{ strName }}[{{ row }}][{{ col }}]" data-multitext-column="{{ col }}" class="tl_text {{ column.class }}" style="width:100%;box-sizing:border-box;{{ column.style }}" value="{{ values[col] }}" aria-label="{{ column.label }}"{% if column.mandatory %} required{% endif %}{% if column.maxlength %} maxlength="{{ column.maxlength }}"{% endif %}{% if arrMultiErrors[row][col]|default([]) %} aria-invalid="true"{% endif %}>
               {% for error in arrMultiErrors[row][col]|default([]) %}<p class="tl_error">{{ error }}</p>{% endfor %}
             </td>
           {% endfor %}
-          <td style="white-space:nowrap">
-            {% for button in arrButtons %}<button type="button" class="tl_multitextwizard_button" data-multitext-action="{{ button.action }}" title="{{ button.title }}" aria-label="{{ button.title }}">{{ button.image|raw }}</button>{% endfor %}
+          <td class="tl_multitextwizard_actions">
+            {% for button in arrButtons %}<button type="button" class="tl_multitextwizard_button{% if button.action == 'drag' %} drag-handle{% endif %}" {% if button.action == 'drag' %}data-action="keydown->contao--sortable#move"{% else %}data-multitext-action="{{ button.action }}"{% endif %} title="{{ button.title }}" aria-label="{{ button.title }}">{{ button.image|raw }}</button>{% endfor %}
           </td>
         </tr>
       {% endfor %}
