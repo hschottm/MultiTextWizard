@@ -1,0 +1,52 @@
+<?php
+require __DIR__.'/bootstrap.php';
+use Hschottm\MultiTextWizardBundle\MultiTextWizard;
+use Contao\Input;
+set_error_handler(static function ($severity, $message, $file, $line) {
+    if ($severity & (E_WARNING | E_NOTICE | E_USER_WARNING)) throw new ErrorException($message, 0, $severity, $file, $line);
+    return false;
+});
+$widget = new MultiTextWizard(['id'=>'different_id','name'=>'rows','columns'=>[
+    ['label'=>'Name <test>', 'mandatory'=>true, 'unique'=>true], ['label'=>'Optional']
+], 'value'=>serialize([['<script>"&', '100%']])]);
+$html=$widget->generate();
+check(str_contains($html,'name="rows[0][0]"'), 'POST name independent of DOM id');
+check(str_contains($html,'&lt;script&gt;&quot;&amp;'), 'Value escaped');
+check(str_contains($html,'Name &lt;test&gt;'), 'Label escaped');
+check(!str_contains($html,'onclick='), 'No legacy inline handler');
+check(substr_count($html,'data-multitext-action=')===5, 'All row actions');
+$widget->generate();
+check(count($GLOBALS['TL_JAVASCRIPT'])===1, 'Asset included once');
+Input::setPost('rows', [[' Alice ','one'],['Alice','two']]);
+$widget->validate();
+check($widget->hasErrors(), 'Uniqueness compares normalized values');
+check($widget->value[0][0]==='Alice', 'Core trims values');
+check(str_contains($widget->generate(),'not unique'), 'Per-cell error rendering');
+Input::setPost('rows', [['Bob']]);
+$widget->validate();
+check(!$widget->hasErrors() && $widget->value===[['Bob','']], 'Optional missing cells normalized');
+Input::setPost('rows', [[]]);
+$widget->validate();
+check($widget->hasErrors(), 'Missing mandatory cells validated');
+Input::setPost('rows', [[['nested'],'text']]);
+$widget->validate();
+check($widget->hasErrors(), 'Nested values rejected without warnings');
+Input::setPost('rows', 'malformed');
+$widget->validate();
+check($widget->hasErrors(), 'Non-array POST rejected');
+$GLOBALS['TL_LANG']['ERR']['maxlength'] = '%s must not exceed %s characters';
+$limited = new MultiTextWizard(['id'=>'limited', 'name'=>'limited', 'columns'=>[['maxlength'=>2, 'mandatory'=>false]], 'mandatory'=>true]);
+Input::setPost('limited', [['abc']]);
+$limited->validate();
+check($limited->hasErrors(), 'Column maxlength validated by core');
+Input::setPost('limited', [['']]);
+$limited->validate();
+check(!$limited->hasErrors(), 'Explicit column option wins over later global default');
+$numeric = new MultiTextWizard(['id'=>'number','name'=>'number','labels'=>['A','B'],'columns'=>2]);
+check(substr_count($numeric->generate(),'data-multitext-column=')===2, 'Integer columns and labels');
+$single = new MultiTextWizard(['id'=>'single','name'=>'single']);
+check(substr_count($single->generate(),'data-multitext-column=')===1, 'Default empty row');
+require $root.'/src/Resources/contao/config/config.php';
+check($GLOBALS['BE_FFL']['multitextWizard']===MultiTextWizard::class,'Widget registered');
+foreach ($map as $class=>$path) check(class_exists($class), 'Load '.$class);
+echo "PHP/Twig tests passed: rendering, escaping, configuration, validation, uniqueness, malformed input and registration.\n";

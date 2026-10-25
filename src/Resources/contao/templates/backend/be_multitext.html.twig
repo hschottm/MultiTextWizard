@@ -1,0 +1,23 @@
+<div class="tl_multitextwizard">
+  <table class="tl_multitextwizard" id="ctrl_{{ strId }}" data-multitext-name="{{ strName }}"{% if style %} style="{{ style }}"{% endif %}>
+    <thead><tr>
+      {% for column in arrColumns %}<th scope="col" style="text-align:left">{{ column.label }}{% if column.mandatory %}<span class="mandatory">*</span>{% endif %}</th>{% endfor %}
+      <th></th>
+    </tr></thead>
+    <tbody>
+      {% for row, values in varValue %}
+        <tr>
+          {% for col, column in arrColumns %}
+            <td style="padding-right:5px;{% if column.width %}width:{{ column.width }};{% endif %}">
+              <input type="text" id="ctrl_{{ strId }}_{{ row }}_{{ col }}" name="{{ strName }}[{{ row }}][{{ col }}]" data-multitext-column="{{ col }}" class="tl_text {{ column.class }}" style="width:95%;{{ column.style }}" value="{{ values[col] }}" aria-label="{{ column.label }}"{% if column.mandatory %} required{% endif %}{% if column.maxlength %} maxlength="{{ column.maxlength }}"{% endif %}{% if arrMultiErrors[row][col]|default([]) %} aria-invalid="true"{% endif %}>
+              {% for error in arrMultiErrors[row][col]|default([]) %}<p class="tl_error">{{ error }}</p>{% endfor %}
+            </td>
+          {% endfor %}
+          <td style="white-space:nowrap">
+            {% for button in arrButtons %}<button type="button" class="tl_multitextwizard_button" data-multitext-action="{{ button.action }}" title="{{ button.title }}" aria-label="{{ button.title }}"><img src="bundles/hschottmmultitextwizard/icons/lucide/{{ button.icon }}.svg" width="16" height="16" alt="" aria-hidden="true"></button>{% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

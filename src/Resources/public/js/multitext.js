@@ -1,101 +1,56 @@
-/**
- * Class MultiText
- *
- * Provide methods to handle back end tasks.
- * @copyright  Helmut Schottmüller 2008
- * @author     Helmut Schottmüller <typolight@aurealis.de>
- * @package    Backend
- */
-var MultiText =
-{
-	/**
-	 * Multitext wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	multitextWizard: function(el, command, id)
-	{
-		var table = $(id);
-		var thead = table.getFirst();
-		var tbody = thead.getNext();
-		var rows = tbody.getChildren();
-		var parentTd = $(el).getParent();
-		var parentTr = parentTd.getParent();
-		var cols = parentTr.getChildren();
-		var index = 0;
-		var selectElement = null;
-		for (var i=0; i<cols.length; i++)
-		{
-			if (cols[i] == parentTd)
-			{
-				break;
-			}
-
-			index++;
-		}
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'rnew':
-				var tr = new Element('tr');
-				var childs = parentTr.getChildren();
-
-				for (var i=0; i<childs.length; i++)
-				{
-					var next = childs[i].clone(true).inject(tr);
-					if (!selectElement) selectElement = next.getFirst();
-					next.getFirst().value = '';
-				}
-				tr.inject(parentTr, 'after');
-				break;
-
-			case 'rcopy':
-				var tr = new Element('tr');
-				var childs = parentTr.getChildren();
-
-				for (var i=0; i<childs.length; i++)
-				{
-					var next = childs[i].clone(true).inject(tr);
-					if (!selectElement) selectElement = next.getFirst();
-					next.getFirst().value = childs[i].getFirst().value;
-				}
-				tr.inject(parentTr, 'after');
-				break;
-
-			case 'rup':
-				parentTr.getPrevious() ? parentTr.inject(parentTr.getPrevious(), 'before') : parentTr.inject(tbody);
-				break;
-
-			case 'rdown':
-				parentTr.getNext() ? parentTr.inject(parentTr.getNext(), 'after') : parentTr.inject(tbody.getFirst().getNext(), 'before');
-				break;
-
-			case 'rdelete':
-				(rows.length > 1) ? parentTr.dispose() : null;
-				break;
-		}
-
-		rows = tbody.getChildren();
-
-		for (var i=0; i<rows.length; i++)
-		{
-			var childs = rows[i].getChildren();
-
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-				if (first && first.type.toLowerCase() == 'text')
-				{
-					first.name = first.name.replace(/\[[0-9]+\][[0-9]+\]/ig, '[' + i + '][' + j + ']')
-				}
-			}
-		}
-		if (selectElement)
-		{
-			selectElement.select();
-		}
-	}
-};
+/** MultiTextWizard row editing; no MooTools dependency. */
+(() => {
+    if (window.MultiText?.native) return;
+    function edit(element, command, id) {
+        const table = id ? document.getElementById(id) : element.closest('[data-multitext-name]');
+        const row = element.closest('tr');
+        if (!table || !row || row.parentElement !== table.tBodies[0]) return;
+        const body = row.parentElement;
+        let focus = null;
+        switch (command) {
+            case 'rnew':
+            case 'rcopy': {
+                const clone = row.cloneNode(true);
+                clone.querySelectorAll('input[data-multitext-column]').forEach((input, col) => {
+                    input.value = command === 'rnew' ? '' : row.querySelectorAll('input[data-multitext-column]')[col].value;
+                    input.removeAttribute('aria-invalid');
+                });
+                clone.querySelectorAll('.tl_error').forEach(error => error.remove());
+                row.after(clone);
+                focus = clone.querySelector('input');
+                break;
+            }
+            case 'rup':
+                if (row.previousElementSibling) body.insertBefore(row, row.previousElementSibling);
+                else body.append(row);
+                break;
+            case 'rdown':
+                if (row.nextElementSibling) row.nextElementSibling.after(row);
+                else body.prepend(row);
+                break;
+            case 'rdelete':
+                if (body.rows.length <= 1) return;
+                focus = (row.nextElementSibling || row.previousElementSibling).querySelector('input');
+                row.remove();
+                break;
+            default: return;
+        }
+        Array.from(body.rows).forEach((item, index) => {
+            item.querySelectorAll('input[data-multitext-column]').forEach(input => {
+                const col = input.dataset.multitextColumn;
+                input.name = `${table.dataset.multitextName}[${index}][${col}]`;
+                input.id = `${table.id}_${index}_${col}`;
+            });
+        });
+        table.dispatchEvent(new Event('input', {bubbles: true}));
+        table.dispatchEvent(new Event('change', {bubbles: true}));
+        if (focus) { focus.focus(); focus.select(); }
+    }
+    window.MultiText = {native: true, multitextWizard: edit};
+    document.addEventListener('click', event => {
+        const button = event.target.closest('[data-multitext-action]');
+        if (!button) return;
+        event.preventDefault();
+        edit(button, button.dataset.multitextAction);
+    });
+})();
