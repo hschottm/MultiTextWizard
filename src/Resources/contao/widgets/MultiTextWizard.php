@@ -110,6 +110,10 @@ class MultiTextWizard extends Widget
         if (!in_array($script, $GLOBALS['TL_JAVASCRIPT'] ?? [], true)) {
             $GLOBALS['TL_JAVASCRIPT'][] = $script;
         }
+        $stylesheet = 'bundles/hschottmmultitextwizard/css/multitext.css';
+        if (!in_array($stylesheet, $GLOBALS['TL_CSS'] ?? [], true)) {
+            $GLOBALS['TL_CSS'][] = $stylesheet;
+        }
         $columns = $this->columns();
         $rows = is_array($this->varValue) && $this->varValue ? array_values($this->varValue) : [[]];
         foreach ($rows as &$row) {
@@ -128,7 +132,7 @@ class MultiTextWizard extends Widget
         $template->arrMultiErrors = $this->arrMultiErrors;
         $buttons = [];
         foreach (['rnew' => 'plus', 'rcopy' => 'copy', 'rup' => 'arrow-up', 'rdown' => 'arrow-down', 'rdelete' => 'trash-2'] as $action => $icon) {
-            $buttons[] = ['action' => $action, 'icon' => $icon, 'title' =>
+            $buttons[] = ['action' => $action, 'icon' => $icon, 'image' => \Contao\Image::getHtml((['rnew' => 'new', 'rcopy' => 'copy', 'rup' => 'arrow-down', 'rdown' => 'arrow-down', 'rdelete' => 'delete'][$action]).'.svg', '', 'aria-hidden="true"'), 'title' =>
                 $this->arrConfiguration['buttonTitles'][$action] ?? $GLOBALS['TL_LANG'][$this->strTable][$action][0]
                 ?? $GLOBALS['TL_LANG']['MSC']['multitextWizard'][$action] ?? $action];
         }

@@ -14,7 +14,7 @@
             </td>
           {% endfor %}
           <td style="white-space:nowrap">
-            {% for button in arrButtons %}<button type="button" class="tl_multitextwizard_button" data-multitext-action="{{ button.action }}" title="{{ button.title }}" aria-label="{{ button.title }}"><img src="bundles/hschottmmultitextwizard/icons/lucide/{{ button.icon }}.svg" width="16" height="16" alt="" aria-hidden="true"></button>{% endfor %}
+            {% for button in arrButtons %}<button type="button" class="tl_multitextwizard_button" data-multitext-action="{{ button.action }}" title="{{ button.title }}" aria-label="{{ button.title }}">{{ button.image|raw }}</button>{% endfor %}
           </td>
         </tr>
       {% endfor %}
