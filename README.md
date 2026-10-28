@@ -7,7 +7,7 @@ Contao backend widget for text list input
 
 contao-multitextwizard is a backend widget that can be used to add and edit an array of text input fields to Contao backend forms.
 
-![textwizard](https://github.com/hschottm/MultiTextWizard/blob/Documentation/docs/images/screenshot_multitextwizard_backend.png)
+<img width="912" height="180" alt="multitextwizard" src="https://github.com/user-attachments/assets/9fc5fe88-7fb7-4f6a-96f8-f5251e7f5416" />
 
 ## Use in the data container array (DCA)
 
