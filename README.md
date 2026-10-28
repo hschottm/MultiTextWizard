@@ -45,24 +45,35 @@ contao-multitextwizard is a backend widget that can be used to add and edit an a
 ),
 ```
 
+The Contao Manager registers the bundle and the `multitextWizard` input type
+automatically. After adding a field that requires a database column, update
+the database using the Contao Manager or `vendor/bin/contao-console contao:migrate`.
 
-## Contao 5.7 LTS
+The widget stores rows with zero-based column indexes. The `columns` option
+accepts a column-definition array or a positive column count; `labels` can
+supply separate labels. Column options include `label`, `name` (CSS class),
+`mandatory`, `rgxp`, `unique`, `maxlength`, `width` and `style`.
+Explicit column settings override global defaults.
 
-Requires PHP 8.3+ and Contao 5.7.x. Tested against Contao 5.7.15.
-Install the development branch with `composer require hschottm/contao-multitextwizard:dev-contao57`.
-The Contao Manager plugin registers the bundle and the `multitextWizard` input type automatically.
-Run `vendor/bin/contao-console contao:migrate` after adding a DCA field that needs a database column.
+## Release history
 
-The widget stores a two-dimensional array (rows, then zero-based column indexes); existing serialized values and the DCA input type are preserved. `columns` accepts a column-definition array or a positive column count; `labels` can supply separate labels. Column options include `label`, `name` (CSS class), `mandatory`, `rgxp`, `unique`, `maxlength`, `width` and `style`. Explicit column settings override global defaults, independently of DCA option order. Uniqueness is checked after core value normalization.
+### Contao 5.7 support
 
-Rendering uses `be_multitext.html.twig`; existing custom `.html5` overrides need migration. Values, labels, button titles and errors are escaped by Twig. Row actions use native JavaScript and real buttons, work after Turbo navigation, and keep field names/IDs synchronized. Changes are saved only when submitting the backend form; the obsolete GET-based database updates have been removed. JavaScript is required for row editing. Custom `buttonTitles` remain supported, with German and English defaults.
+* Added support for Contao 5.7 and PHP 8.3 or newer.
+* Preserved the `multitextWizard` input type and existing stored values.
+* Migrated rendering to Twig, with escaped values, labels, button titles and error messages.
+* Updated row controls to work after backend navigation and keep field names and IDs synchronized.
+* Changed row editing so that changes are saved only when the backend form is submitted.
+* Improved column validation: explicit settings take precedence regardless of option order, and uniqueness is checked after value normalization.
+* Retained custom `buttonTitles` with German and English defaults.
+* Updated row action icons to locally bundled SVGs.
 
-No Contao parent method bodies are copied: individual cells are validated by `Widget::validator()`.
+## Updating existing installations
 
-## Checks
+Custom `.html5` template overrides must be converted to Twig. The supplied
+template is `be_multitext.html.twig`. JavaScript must be enabled to edit rows.
 
-- `MULTITEXT_TEST_AUTOLOAD=/path/to/vendor/autoload.php php tests/run.php`: actual Contao classes and Twig, isolated application services.
-- `node tests/javascript.cjs`: row commands, boundary moves, field indexing and repeat initialization.
-- `MULTITEXT_TEST_APP=/path/to/contao php tests/integration.php`: real Contao kernel in a separate temporary cache, bundle registration and template rendering; no database writes.
+## Credits
 
-Row action icons are bundled SVGs from Lucide 0.468.0 (https://github.com/lucide-icons/lucide/tree/0.468.0). License notices are included in `src/Resources/public/icons/lucide/LICENSE`. No CDN or icon JavaScript runtime is required.
+Row action icons are from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0).
+License notices are included in `src/Resources/public/icons/lucide/LICENSE`.
