@@ -77,3 +77,10 @@ template is `be_multitext.html.twig`. JavaScript must be enabled to edit rows.
 
 Row action icons are from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0).
 License notices are included in `src/Resources/public/icons/lucide/LICENSE`.
+
+## License
+
+This extension is licensed under the GNU Lesser General Public License, version 3
+or (at your option) any later version (`LGPL-3.0-or-later`). See [LICENSE](LICENSE).
+
+Bundled third-party assets retain their respective licenses and copyright notices.
