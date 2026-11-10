@@ -57,18 +57,9 @@ supply separate labels. Column options include `label`, `name` (CSS class),
 `mandatory`, `rgxp`, `unique`, `maxlength`, `width` and `style`.
 Explicit column settings override global defaults.
 
-## Release history
+## Changelog
 
-### Contao 5.7 support
-
-* Added support for Contao 5.7 and PHP 8.3 or newer.
-* Preserved the `multitextWizard` input type and existing stored values.
-* Migrated rendering to Twig, with escaped values, labels, button titles and error messages.
-* Updated row controls to work after backend navigation and keep field names and IDs synchronized.
-* Changed row editing so that changes are saved only when the backend form is submitted.
-* Improved column validation: explicit settings take precedence regardless of option order, and uniqueness is checked after value normalization.
-* Retained custom `buttonTitles` with German and English defaults.
-* Updated row action icons to locally bundled SVGs.
+See [CHANGELOG.md](CHANGELOG.md) for changes grouped by release tag.
 
 ## Updating existing installations
 
