@@ -1,3 +1,5 @@
+![Contao MultiTextWizard](logo.svg)
+
 [![Latest Version on Packagist](http://img.shields.io/packagist/v/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-multitextwizard)
 [![Installations via composer per month](http://img.shields.io/packagist/dm/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-multitextwizard)
 [![Installations via composer total](http://img.shields.io/packagist/dt/hschottm/contao-textwizard.svg?style=flat)](https://packagist.org/packages/hschottm/contao-multitextwizard)
@@ -44,3 +46,11 @@ contao-textwizard is a backend widget that can be used to add and edit an array 
   'sql'                     => "blob NULL"
 ),
 ```
+
+## Package icon
+
+The scalable [logo.svg](logo.svg) combines six input fields in two columns with a
+magic wand and sparkle on an anthracite background with an orange corner.
+For display in the Contao Manager, the logo is maintained separately in
+[contao/package-metadata](https://github.com/contao/package-metadata) under
+`meta/hschottm/contao-multitextwizard/logo.svg`.
